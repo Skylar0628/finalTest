@@ -6,8 +6,10 @@ import Grid from '@mui/material/Grid';
 import React from 'react';
 import { login } from '../API/0101Api';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Login(){
+    const navigate = useNavigate();
 
     React.useEffect(()=>{
      // 取出token
@@ -36,7 +38,7 @@ function Login(){
     }
 
     const handleSubmit = ()=> {
-        login(data)
+        login(data,navigate)
     }
 
    return(<div>
@@ -45,7 +47,6 @@ function Login(){
                 <Grid align='center'>
                   <h2>login</h2>
                 </Grid>
-               {JSON.stringify(data)}
                 <TextField name='username' label='username' variant='standard' placeholder='使用者帳號' fullWidth sx={{marginBottom:'1.2rem'}}  onChange={handleChange}/>
                 <TextField name='password' label='password' variant='standard' placeholder='密碼' fullWidth onChange={handleChange}/>
 
