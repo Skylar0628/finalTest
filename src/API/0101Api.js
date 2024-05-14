@@ -2,15 +2,20 @@ import axios from "axios"
 
 
 // 登入
-export const login = (async(data,navigate)=>{
+export const login = (async(data,navigate,MyContext)=>{
     await axios.post(`${process.env.REACT_APP_URL}/v2/admin/signin`,data)
     .then((res)=> {
         const { token,expired } = res.data;
         document.cookie = `myToken=${token}; expirse=${ new Date(expired) }`
-        navigate('/admin/Product');
+        console.log(res.data.success)
+        if(res.data.success){
+            navigate('/admin/Product')
+        }else{
+            MyContext.setIsLogin(false);
+        }
     })
     .catch((err)=>{
-        console.log('登入失敗')
+      console.log(err)
     })
 })
 

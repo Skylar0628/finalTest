@@ -12,9 +12,11 @@ const P_data = {
 }
 
 function App() {
-  const [ data,setData ] = React.useState(P_data)
+  const [ data,setData ] = React.useState(P_data);
+  const [ isLogin, setIsLogin ] = React.useState(true); 
   const global = {
-     data,setData 
+     data,setData,
+     isLogin, setIsLogin
   }
   return (
     <Context.Provider value={global}>

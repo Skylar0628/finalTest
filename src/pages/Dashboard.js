@@ -20,6 +20,11 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import {Button, Stack} from '@mui/material';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
+ 
 
 const drawerWidth = 240;
 
@@ -72,6 +77,24 @@ export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
+  const logout = ()=> {
+    document.cookie = 'myToken=;'
+    navigate('/')
+  }
+   // 取出token
+   const token = document.cookie
+   .split('; ')
+   .find((row)=>row.startsWith('myToken='))
+   ?.split('=')[1];
+   axios.defaults.headers.common['Authoruzation'] = token;
+   React.useEffect(()=>{
+     if(!token){
+      navigate('/')
+     }
+   },[navigate,token])
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -85,6 +108,8 @@ export default function Dashboard() {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
+          <Stack direction='row' justifyContent='space-between' sx={{ width:'100%'}}>
+          <Box sx={{ display: 'flex' , alignItems:'center'}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -97,8 +122,13 @@ export default function Dashboard() {
           <Typography variant="h6" noWrap component="div">
             Persistent drawer
           </Typography>
+          </Box>
+        
+          <Button variant='contained' onClick={logout}>登出</Button>
+          </Stack>
         </Toolbar>
-      </AppBar>
+  
+       </AppBar>
       <Drawer
         sx={{
           width: drawerWidth,

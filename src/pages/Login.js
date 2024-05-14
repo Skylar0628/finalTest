@@ -7,8 +7,14 @@ import React from 'react';
 import { login } from '../API/0101Api';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Context from './adminprodute/AdminPdcContext';
+import Alert from '@mui/material/Alert';
+
 
 function Login(){
+    
+    const MyContext = React.useContext(Context);
+    
     const navigate = useNavigate();
 
     React.useEffect(()=>{
@@ -38,7 +44,7 @@ function Login(){
     }
 
     const handleSubmit = ()=> {
-        login(data,navigate)
+        login(data,navigate,MyContext)
     }
 
    return(<div>
@@ -47,6 +53,9 @@ function Login(){
                 <Grid align='center'>
                   <h2>login</h2>
                 </Grid>
+             
+                {MyContext.isLogin? null:  <Alert severity="error">登入錯誤</Alert>}
+
                 <TextField name='username' label='username' variant='standard' placeholder='使用者帳號' fullWidth sx={{marginBottom:'1.2rem'}}  onChange={handleChange}/>
                 <TextField name='password' label='password' variant='standard' placeholder='密碼' fullWidth onChange={handleChange}/>
 
