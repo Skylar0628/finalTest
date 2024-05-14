@@ -89,9 +89,19 @@ export default function Dashboard() {
    .find((row)=>row.startsWith('myToken='))
    ?.split('=')[1];
    axios.defaults.headers.common['Authoruzation'] = token;
+
    React.useEffect(()=>{
      if(!token){
       navigate('/')
+      (async()=>{
+        try {
+          await axios.post('/v2/api/user/check')
+        } catch (error) {
+          if(!error.responsive.data.success){
+            navigate('/admin')
+          }
+        }
+      })()
      }
    },[navigate,token])
 
@@ -164,7 +174,7 @@ export default function Dashboard() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Outlet/>
+        {token && <Outlet/>} 
       </Main>
     </Box>
   );
